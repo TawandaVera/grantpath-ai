@@ -1,0 +1,77 @@
+{
+  "type": "object",
+  "properties": {
+    "grant_id": {
+      "type": "string",
+      "description": "Unique identifier from source"
+    },
+    "title": {
+      "type": "string"
+    },
+    "funder": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "eligibility_criteria": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "funding_amount_min": {
+      "type": "number"
+    },
+    "funding_amount_max": {
+      "type": "number"
+    },
+    "deadline": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "application_url": {
+      "type": "string"
+    },
+    "category_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "geographic_restrictions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "org_type_eligibility": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "cost_sharing_required": {
+      "type": "boolean"
+    },
+    "source": {
+      "type": "string",
+      "description": "Where this grant was discovered"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "expired",
+        "unverified"
+      ],
+      "default": "unverified"
+    },
+    "last_verified": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [],
+  "name": "Grant"
+}
