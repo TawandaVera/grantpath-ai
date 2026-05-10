@@ -1,0 +1,224 @@
+# 🤖 **GHIS Grant Discovery Agent: Full System Specification & UI**
+
+---
+
+## **1. AGENT CORE PROMPT (Reverse Specification)**
+
+You are the **Grant Discovery Agent** for Global Health Innovation Solutions (GHIS), LLC. Your entire operation must be **transparent, auditable, and idempotent**—meaning you never duplicate work and always show your reasoning.
+
+### **Your Identity & Non-Negotiable Behaviors:**
+
+- **You are state-aware**: You know the timestamp of your last run and what grants exist in JobsRaw.
+- **You are deduplication-obsessed**: You refuse to add any grant that is already cataloged. You use **three-layer fingerprinting**, not just title matching.
+- **You are transparent by default**: Every run produces a public audit trail showing: sources queried, grants found, duplicates rejected, ineligible filtered, and new additions.
+- **You are periodic**: You can be triggered manually, scheduled, or run on demand, but you always resume from where you left off.
+
+---
+
+## **2. OPERATIONAL LOOP (How You Run Periodically)**
+
+Each execution cycle follows this exact sequence:
+
+### **Phase 1: State Check (Always Transparent)**
+```text
+1. Read LastRunTimestamp from your state log
+2. SELECT DISTINCT grant_fingerprint FROM JobsRaw WHERE date_added >= LastRunTimestamp - 7 days
+3. Build your "Exclusion Set" of fingerprints to avoid
+4. Log: "Exclusion Set contains 47 grants from last 7 days"
+```
+
+### **Phase 2: Search & Harvest**
+```text
+For each class_id (1, 3, 4, 5):
+- Query official funder RSS feeds, APIs, and program pages
+- Scrape only from .org, .int sources (NO .gov per instructions)
+- Capture: title, funder, amount, deadline, eligibility text, required forms, geography, source_url, full_html_snapshot
+- Log: "Class 3: 23 raw grants found, 8 within deadline window"
+```
+
+### **Phase 3: Deduplication Engine (Three-Layer Fingerprinting)**
+```text
+For each raw grant candidate:
+  Layer 1: Compute FINGERPRINT = MD5(lower(funder_name) + program_code + deadline_month_year)
+  IF fingerprint EXISTS in JobsRaw → REJECT and log: "DUPLICATE: RWJF Pioneering Ideas (fingerprint: a3f9c2)"
+  
+  Layer 2: Compute TITLE_SIM = NormalizeTitle(candidate.title) vs NormalizeTitle(existing.title)
+  IF TITLE_SIM >= 0.95 → REJECT and log: "DUPLICATE: Title similarity 96% (RWJF Pioneering Ideas)"
+  
+  Layer 3: IF candidate.source_url == existing.source_url → REJECT and log: "DUPLICATE: URL exists"
+  
+  ELSE → PASS to validation
+```
+
+### **Phase 4: Eligibility & Quality Validation**
+```text
+- Verify amount $25K-$250K
+- Verify deadline within 90 days OR rolling
+- Verify LLC eligibility via keyword scan: ("LLC", "for-profit", "private sector", "B-Corp")
+- Verify focus area: health systems, workforce, equity, innovation, prevention/SDOH
+- Verify NO .gov domain in source_url
+- Log rejections: "INVALID: Out of amount range ($500K) - REJECTED"
+```
+
+### **Phase 5: Classification & Enrichment**
+```text
+- Assign class_id per funder taxonomy
+- Extract required forms from guideline page
+- Tag geographic focus
+- Generate "alignment_snippet": 1-sentence summary of why this fits GHIS
+```
+
+### **Phase 6: Transparent Reporting (Always Output This)**
+```text
+Every run MUST produce a structured transparency report:
+{
+  "run_id": "ghis_grant_agent_2024_10_27_14_30_00",
+  "timestamp": "2024-10-27T14:30:00Z",
+  "exclusion_set_size": 47,
+  "searched_sources": ["rwjf.org", "kresge.org", "who.int", "unicef.org", ...],
+  "raw_candidates_found": 156,
+  "within_deadline_window": 89,
+  "duplicates_rejected": 23,
+  "invalid_rejected": 12,
+  "new_grants_added": 54,
+  "class_distribution": {"1": 8, "3": 28, "4": 10, "5": 8},
+  "added_grants": [...list of grant_fingerprint IDs...],
+  "duplicate_examples": [
+    {
+      "rejected_title": "Pioneering Health Ideas",
+      "reason": "Layer 2 duplicate - 96% title similarity to existing RWJF Pioneering Ideas",
+      "existing_fingerprint": "a3f9c2"
+    }
+  ]
+}
+```
+
+---
+
+## **3. FULL UI/UX INTERFACE**
+
+### **Dashboard Layout (Web-Based Control Panel)**
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ GHIS Grant Discovery Agent v2.4.0                                           │
+│ Last Run: 2 hours ago (2024-10-27 14:30 UTC) | Status: ✅ Healthy           │
+│ New Grants (24h): 12 | Duplicates Blocked: 5 | Database: 1,247 grants     │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────┬─────────────────────────────────────────────────────────────┐
+│  CONTROL     │  MAIN PIPELINE VIEW                                          │
+│              │  ┌─────────────────────────────────────────────────────────┐ │
+│  ┌─────────┐ │  │  Filter: [All ▼] [Class 1 □] [Class 3 □] [Class 4 □]   │ │
+│  │Run Now  │ │  │  Sort: [Deadline ▼] | Search: _____________ 🔍        │ │
+│  │Schedule │ │  ├─────────────────────────────────────────────────────────┤ │
+│  │Pause    │ │  │  #  Title               Funder        Amount  Deadline │ │
+│  │Config   │ │  │  1  Pioneering Ideas   RWJF         $50-200K  Rolling  │ │
+│  └─────────┘ │  │  2  Health Equity      Kresge       $75-250K  Dec 15   │ │
+│              │  │  3  Innovation Award   de Beaumont  $25-100K  Nov 30   │ │
+│  ACTIVITY    │  │  ...                                                     │ │
+│  LOG         │  └─────────────────────────────────────────────────────────┘ │
+│              │                                                              │
+│  14:30:02 ✅ Started run ghis_grant_agent_2024_10_27_14_30_00    │
+│  14:30:05 ℹ️  Exclusion set: 47 grants                           │
+│  14:30:18 ℹ️  Class 3: 23 raw grants found, 8 within window     │
+│  14:30:22 ⚠️  DUPLICATE: RWJF Pioneering Ideas (96% similarity)  │
+│  14:30:29 ✅ NEW: Kresge Health & Housing ($100-250K) added      │
+│  14:30:45 ✅ Run complete: 54 new grants added, 23 duplicates    │
+│              │                                                              │
+│  [View Full Log] [Export CSV] [API Docs]                      │
+└──────────────┴─────────────────────────────────────────────────────────────┘
+```
+
+### **Interactive Elements:**
+
+- **Run Now Button**: Triggers immediate execution, shows live log streaming
+- **Schedule Toggle**: Set cron pattern (e.g., `0 6 * * 1,3,5` for Mon/Wed/Fri 6am)
+- **Config Panel**: Adjust dedup thresholds, add new funder sources, exclude keywords
+- **Grant Row Click**: Expands to show full details + HTML snapshot + validation audit
+- **Duplicate Tab**: Shows full list of blocked grants with rejection reasons
+
+---
+
+## **4. DATA SCHEMA (JobsRaw Table)**
+
+Your database must support fast deduplication:
+
+```sql
+CREATE TABLE JobsRaw (
+    grant_fingerprint CHAR(32) PRIMARY KEY,  -- MD5 hash of L1 fingerprint
+    title VARCHAR(500) NOT NULL,
+    normalized_title VARCHAR(500) NOT NULL,  -- For Layer 2 similarity
+    funder_name VARCHAR(200) NOT NULL,
+    program_code VARCHAR(100),               -- From guideline URL if available
+    amount_min INT,
+    amount_max INT,
+    deadline DATE,
+    is_rolling BOOLEAN,
+    eligibility_text TEXT,
+    required_forms JSON,
+    geographic_focus JSON,
+    source_url VARCHAR(500) UNIQUE,
+    full_html_snapshot TEXT,                 -- For audit trail
+    class_id INT,
+    alignment_snippet TEXT,
+    date_added TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    date_last_verified TIMESTAMP,
+    verification_status ENUM('pending','verified','expired'),
+    dedup_rejection_log JSON,                -- If rejected, store reason
+    INDEX idx_funder_deadline (funder_name, deadline_month_year),
+    INDEX idx_normalized_title (normalized_title(255))
+);
+```
+
+---
+
+## **5. PROMPT TO ENABLE PERIODIC EXECUTION**
+
+Embed this in your agent's config:
+
+```yaml
+agent_id: ghis_grant_discovery
+execution_mode: periodic
+schedule: "0 6 * * 1,3,5"  # Mon/Wed/Fri 6am UTC
+stateful: true
+deduplication:
+  layer1_fingerprint: true
+  layer2_title_similarity: 0.95
+  layer3_url_exact_match: true
+transparency:
+  always_output_report: true
+  include_html_snapshots: true
+  log_duplicate_rejections: true
+  log_invalid_rejections: true
+halt_on:
+  duplicate_rate_above: 0.80  # If >80% duplicates, pause and alert
+  invalid_rate_above: 0.50    # If >50% invalid, pause and alert
+```
+
+---
+
+## **6. TRANSPARENCY DASHBOARD (JSON API)**
+
+Every run posts to `/api/agent/transparency`:
+
+```json
+{
+  "run_id": "ghis_grant_agent_2024_10_27_14_30_00",
+  "transparency_url": "https://ghis.io/agent/runs/ghis_grant_agent_2024_10_27_14_30_00",
+  "download_csv": "https://ghis.io/agent/runs/ghis_grant_agent_2024_10_27_14_30_00/grants.csv",
+  "download_full_log": "https://ghis.io/agent/runs/ghis_grant_agent_2024_10_27_14_30_00/debug.log",
+  "compliance_score": 0.98,
+  "audit_trail": [ ... ]
+}
+```
+
+---
+
+**This system ensures:**
+✅ No duplicates ever hit JobsRaw  
+✅ Every decision is logged and reviewable  
+✅ The agent runs autonomously but transparently  
+✅ Users see exactly what the agent is doing and why  
+
+Would you like me to generate the **actual Python/TypeScript agent code** or the **Docker deployment config** next?

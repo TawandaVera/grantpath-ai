@@ -1,0 +1,49 @@
+Understood. **Option 1: Execute the grant search.**
+
+---
+
+## ⚠️ **Critical Input Required**
+
+The reverse prompt specification **cannot be executed without your specific organizational criteria**. Please provide the following required fields:
+
+### **Required Criteria (Template)**
+
+```
+Industry/Sector: ___________
+Organization Type: ___________
+Geographic Eligibility: ___________
+Funding Need ($ Range): ___________
+Project Stage / Use of Funds: ___________
+Company Size (Employees): ___________
+Annual Revenue (if relevant): ___________
+Special Status (if any): ___________
+Hard Exclusions: ___________
+```
+
+### **Example Input (for reference):**
+
+```
+Industry/Sector: Climate Tech / Clean Energy
+Organization Type: Growth-stage Startup
+Geographic Eligibility: United States (California-based)
+Funding Need: $250K - $2M
+Project Stage / Use of Funds: Pilot deployment & commercialization
+Company Size: 10-50 employees
+Annual Revenue: <$1M
+Special Status: Minority-owned
+Hard Exclusions: No loans, no international grants
+```
+
+---
+
+## 🎯 **Your Options:**
+
+**A) Provide your actual criteria** → I will execute the full pipeline and deliver ≥100 validated grants per the spec.
+
+**B) Use the example above** → I will generate a sample output to demonstrate quality before you provide real criteria.
+
+**Which path do you want to take?**
+
+---
+
+*Note: Beginning execution without verified criteria would violate the specification's accuracy requirements and trigger automatic rejection of the output.*

@@ -1,0 +1,572 @@
+# 🖋️ **Writer Assignment Agent: Intelligent Workflow Orchestration**
+
+---
+
+## **1. AGENT CORE PROMPT (Reverse Specification)**
+
+You are the **Writer Assignment Agent** for GHIS. You orchestrate the **human-in-the-loop** workflow by intelligently assigning grant packages to writers, tracking progress against deadlines, and ensuring quality control.
+
+### **Your Identity & Non-Negotiable Behaviors:**
+
+- **You are a workflow optimizer**: You match grant complexity with writer expertise and availability.
+- **You are deadline-driven**: You schedule backward from submission dates with built-in buffers.
+- **You are quality-focused**: You implement a structured review process with clear checkpoints.
+- **You are transparent**: All assignments, progress, and bottlenecks are visible in real-time.
+
+---
+
+## **2. WRITER ASSIGNMENT WORKFLOW**
+
+### **Step 1: Grant Complexity Scoring**
+
+```python
+COMPLEXITY_MATRIX = {
+    "simple": {
+        "criteria": ["< $100K", "single form", "rolling deadline", "no partners"],
+        "writer_level": "junior",
+        "estimated_hours": 20,
+        "review_cycles": 1
+    },
+    "moderate": {
+        "criteria": ["$100K-$250K", "2-3 forms", "90+ day deadline", "1-2 partners"],
+        "writer_level": "mid",
+        "estimated_hours": 35,
+        "review_cycles": 2
+    },
+    "complex": {
+        "criteria": ["> $250K", "4+ forms", "< 60 days", "3+ partners", "federal"],
+        "writer_level": "senior",
+        "estimated_hours": 60,
+        "review_cycles": 3
+    }
+}
+```
+
+### **Step 2: Writer Matching Algorithm**
+
+```python
+def assign_writer(grant_package, available_writers):
+    # Calculate complexity score
+    complexity = calculate_complexity(grant_package)
+    
+    # Filter writers by:
+    # 1. Required expertise level
+    # 2. Current workload (< 80% capacity)
+    # 3. Subject matter expertise match
+    # 4. Historical success rate with similar grants
+    
+    eligible_writers = [
+        w for w in available_writers 
+        if w.level >= complexity.writer_level
+        and w.current_hours + complexity.estimated_hours <= w.weekly_capacity
+        and w.specialties.intersection(grant_package.mandate_areas)
+    ]
+    
+    # Priority: Expertise match → Success rate → Availability
+    return sorted(eligible_writers, 
+                  key=lambda w: (
+                      len(w.specialties.intersection(grant_package.mandate_areas)),
+                      w.success_rate,
+                      w.current_hours
+                  ), reverse=True)[0]
+```
+
+### **Step 3: Assignment Protocol**
+
+```yaml
+assignment_notification:
+  channels: ["email", "slack", "dashboard"]
+  content:
+    - Grant details (name, amount, deadline)
+    - Complexity rating and estimated hours
+    - Required expertise areas
+    - Timeline with milestones
+    - Links to all templates and resources
+    - Historical similar grants for reference
+    
+acceptance_workflow:
+  1. Writer receives assignment with 24-hour accept/reject window
+  2. If rejected → agent reassigns with complexity escalation
+  3. If accepted → timeline locks in and work begins
+  4. If no response → escalate to supervisor
+```
+
+### **Step 4: Milestone Schedule (Backward from Deadline)**
+
+```text
+DEADLINE: Jan 5, 2025
+─────────────────────────────────────────────────────
+Submission            Jan 5    (Day 0)
+Final Review          Jan 2    (Day -3)  [Buffer]
+Writer Final Draft    Dec 30   (Day -6)   [Quality Check]
+Draft 2 Review        Dec 23   (Day -13) [Content Review]
+Draft 1 Submission    Dec 16   (Day -20) [First Complete]
+Research Complete     Dec 9    (Day -27) [Content Development]
+Kickoff Meeting       Nov 25   (Day -41) [Alignment]
+Assignment Accepted   Nov 22   (Day -44) [Work Begins]
+```
+
+---
+
+## **3. FULL UI/UX INTERFACE**
+
+### **Writer Assignment Dashboard**
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────────────┐
+│ GHIS Writer Assignment Agent v5.1.0                                                      │
+│ Active Assignments: 24 | Writers Available: 8 | On Track: 18 | At Risk: 6               │
+└─────────────────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────┬─────────────────────────────────────────────────────────────────────────┐
+│  WRITER POOL │  ACTIVE ASSIGNMENTS BOARD                                                │
+│              │  ┌─────────────────────────────────────────────────────────────────────┐ │
+│  ┌─────────┐ │  │ Writer       │ Grant           │ Status     │ Deadline │ Progress │ │
+│  │Alex J.  │ │  │─────────────────────────────────────────────────────────────────────│ │
+│  │Level: Sr│ │  │ Maria Chen   │ WHO Innovation  │ Draft 1    │ Jan 05   │ ████▌    │ │
+│  │Load: 65%│ │  │              │                 │            │          │  45%     │ │
+│  │Exp: WHO │ │  │ James Lee    │ RWJF Pioneering Research Dec 31   ███▌      │ │
+│  └─────────┘ │  │              │                 │            │          │  30%     │ │
+│              │  │ ...                                                             │ │
+│  [Add Writer]│ │  └─────────────────────────────────────────────────────────────────────┘ │
+│  [Edit Skills]│                                                                           │
+│              │  ASSIGNMENT DETAIL VIEW (on selection)                                    │
+│  ASSIGNMENT  │  ┌─────────────────────────────────────────────────────────────────────┐ │
+│  QUEUE       │  │ Grant: WHO Innovation Challenge                                    │ │
+│  ┌─────────┐ │  │ Writer: Maria Chen (Senior)                                        │ │
+│  │High: 3  │ │  │ Complexity: Moderate (35 hours)                                    │ │
+│  │Med: 7   │ │  │ Deadline: Jan 05, 2025 (69 days)                                  │ │
+│  │Low: 4   │ │  │ Status: Draft 1 - Research Phase                                  │ │
+│  └─────────┘ │  │                                                                     │ │
+│              │  │ MILESTONE TRACKER:                                                │ │
+│  AUTO-ASSIGN │ │  □ Kickoff Meeting (Nov 25) [Scheduled]                            │ │
+│  [Run Now]   │ │  □ Research Complete (Dec 9) [On Track]                            │ │
+│              │ │  □ Draft 1 Submission (Dec 16) [Next]                              │ │
+│              │ │  □ Draft 2 Review (Dec 23)                                         │ │
+│              │ │  □ Final Draft (Dec 30)                                            │ │
+│              │ │  □ Final Review (Jan 2)                                            │ │
+│              │ │  □ Submission (Jan 5)                                              │ │
+│              │ │                                                                     │ │
+│              │ │  WRITER PERFORMANCE METRICS:                                        │ │
+│              │ │  • Similar grants written: 3                                        │ │
+│              │ │  • Success rate: 67%                                                │ │
+│              │ │  • Avg. days ahead of deadline: 4.2                                │ │
+│              │ │  • Quality score: 8.5/10                                           │ │
+│              │ │                                                                     │ │
+│              │ │  RESOURCES:                                                         │ │
+│              │ │  • Grant Dossier [View]                                            │ │
+│              │ │  • Previous Successful Submission [View]                            │ │
+│              │ │  • Funder Style Guide [Download]                                   │ │
+│              │ │  • Team Calendar [View]                                            │ │
+│              │ │                                                                     │ │
+│              │ │  [Message Writer] [Reschedule] [Reassign] [Escalate]              │ │
+│              │ └─────────────────────────────────────────────────────────────────────┘ │
+└──────────────┴─────────────────────────────────────────────────────────────────────────┘
+```
+
+### **Writer Capacity Management**
+
+```yaml
+capacity_rules:
+  max_weekly_hours: 40
+  warning_threshold: 32  (80%)
+  over_capacity_threshold: 36  (90%)
+  
+auto_reassignment_triggers:
+  - "Writer exceeds capacity threshold"
+  - "Writer falls behind schedule by > 3 days"
+  - "Quality score drops below 7/10"
+  - "Writer requests reassignment"
+  
+buffer_policy:
+  - "Always maintain 20% of writer capacity unassigned"
+  - "Keep 2 emergency writers available for urgent grants"
+  - "Cross-train writers on multiple grant classes"
+```
+
+---
+
+## **4. SUBMISSION TRACKING AGENT**
+
+Now, let's design the **Submission Tracking Agent**:
+
+---
+
+## **5. AGENT CORE PROMPT (Reverse Specification)**
+
+You are the **Submission Tracking Agent** for GHIS. You monitor every submission from **portal entry to decision notification**, ensuring nothing falls through the cracks.
+
+### **Your Identity & Non-Negotiable Behaviors:**
+
+- **You are a submission watchdog**: You track every grant through its entire lifecycle.
+- **You are confirmation-obsessed**: You require proof of submission and track acknowledgment receipts.
+- **You are decision-predictive**: You analyze patterns to forecast decision timelines.
+- **You are learning-oriented**: You capture feedback to improve future success rates.
+
+---
+
+## **6. SUBMISSION TRACKING WORKFLOW**
+
+### **Step 1: Pre-Submission Checklist**
+
+```yaml
+pre_submission_checklist:
+  mandatory:
+    - "All forms completed and signed"
+    - "Budget aligned with guidelines"
+    - "Word/character counts verified"
+    - "Required attachments included"
+    - "Funder formatting requirements met"
+    - "Spell/grammar check completed"
+    - "Internal review sign-off obtained"
+    
+  submission_day:
+    - "Portal access confirmed"
+    - "Submission window verified (timezone)"
+    - "Backup files prepared"
+    - "Primary and secondary contacts ready"
+    - "Technical support contact available"
+```
+
+### **Step 2: Submission Confirmation Protocol**
+
+```python
+def confirm_submission(grant_id, submission_data):
+    # Require multiple proofs of submission
+    proofs_required = [
+        "portal_submission_screenshot",
+        "confirmation_email_forwarded",
+        "submission_reference_number",
+        "timestamp_verified",
+        "file_upload_confirmations"
+    ]
+    
+    # Validate each proof
+    for proof in proofs_required:
+        if not validate_proof(proof, submission_data):
+            escalate_to("submission_verification_team", grant_id)
+            
+    # Only mark as submitted when all proofs verified
+    if all_proofs_valid:
+        update_status(grant_id, "submitted", submission_data)
+        start_decision_tracking(grant_id)
+```
+
+### **Step 3: Decision Timeline Tracking**
+
+```text
+TYPICAL DECISION TIMELINES BY CLASS:
+
+Class 1 (Global Multilateral):
+- Acknowledgement: 1-2 weeks
+- Review period: 3-6 months
+- Decision notification: Email + portal update
+- Contracting: 2-4 months after decision
+
+Class 3 (Foundations):
+- Acknowledgement: 1-4 weeks
+- Review period: 2-4 months
+- Decision notification: Phone call + formal letter
+- Payment: 1-3 months after approval
+
+Class 4 (Hybrid):
+- Acknowledgement: 2-3 weeks
+- Review period: 3-5 months
+- Decision notification: Email
+- Funding release: 1-2 months after approval
+
+Class 5 (Innovation):
+- Acknowledgement: 1-2 weeks
+- Review period: 1-3 months
+- Decision notification: Portal update
+- Funding: 30-60 days after approval
+```
+
+### **Step 4: Post-Submission Actions**
+
+```yaml
+immediate_actions:
+  - "Send thank you email to program officer (within 48 hours)"
+  - "Update CRM with submission details"
+  - "Schedule follow-up in 30 days"
+  - "Document lessons learned"
+  
+periodic_followups:
+  - "30 days: Check on review status"
+  - "60 days: Send brief update on GHIS"
+  - "90 days: Request timeline update if none received"
+  - "At 75% of typical decision time: Prepare for decision"
+```
+
+### **Step 5: Decision Analysis & Learning**
+
+```python
+def analyze_decision(grant_id, decision_outcome):
+    # Capture success/failure factors
+    factors = {
+        "technical_score": extract_from_feedback(),
+        "budget_appropriateness": decision_comments(),
+        "alignment_score": compare_to_mandates(),
+        "writer_quality": writer_performance(),
+        "timing_issues": submission_timing()
+    }
+    
+    # Update writer success rates
+    update_writer_metrics(writer_id, decision_outcome, factors)
+    
+    # Update funder success patterns
+    update_funder_patterns(funder_id, decision_outcome, factors)
+    
+    # Feed back to assessment agent for improved scoring
+    update_scoring_algorithm(factors)
+```
+
+---
+
+## **7. FULL UI/UX INTERFACE**
+
+### **Submission Tracking Dashboard**
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────────────┐
+│ GHIS Submission Tracking Agent v6.0.0                                                    │
+│ Submissions: 47 | Decisions Pending: 32 | Awards: 8 | Declines: 7                       │
+│ Success Rate: 17% | Average Decision Time: 98 days                                      │
+└─────────────────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────┬─────────────────────────────────────────────────────────────────────────┐
+│  FILTERS     │  SUBMISSION TRACKING TABLE                                              │
+│              │  ┌─────────────────────────────────────────────────────────────────────┐ │
+│  Status:     │  │ Grant           │ Submitted   │ Decision ETA │ Status      │ Value │ │
+│  [All ▼]     │  │─────────────────────────────────────────────────────────────────────│ │
+│  Class:      │  │ WHO Innovation  │ Oct 15      │ Jan 15       ████████▌     $150K│ │
+│  [All ▼]     │  │                 │             │              │ 75% elapsed        │ │
+│  Funder:     │  │ RWJF Pioneering │ Sep 30      │ Dec 30       █████████▌    $200K│ │
+│  [All ▼]     │  │                 │             │              │ 85% elapsed        │ │
+│              │  │ ...                                                             │ │
+│              │  └─────────────────────────────────────────────────────────────────────┘ │
+│  DECISION     │                                                                         │
+│  PREDICTIONS  │  DETAILED TRACKING VIEW (on selection)                                  │
+│  ┌─────────┐ │  ┌─────────────────────────────────────────────────────────────────────┐ │
+│  │This Week:2│ │  Grant: WHO Innovation Challenge                                    │ │
+│  │Next Week:5│ │  Submitted: Oct 15, 2024 (42 days ago)                           │ │
+│  │Overdue: 1 │ │  Decision ETA: Jan 15, 2025 (75 days from submission)             │ │
+│  └─────────┘ │  │ Expected Notification Window: Jan 8 - Jan 22                     │ │
+│              │  │                                                                     │ │
+│  [Run Predictions]││  SUBMISSION CONFIRMATION:                                      │ │
+│  [Export Data]   ││  ✓ Portal screenshot saved [View]                             │ │
+│              │ │  ✓ Confirmation email archived [View]                             │ │
+│              │ │  ✓ Reference number: WHO-2024-8472                                │ │
+│              │ │  ✓ All files uploaded successfully                                │ │
+│              │ │                                                                     │ │
+│              │ │  FOLLOW-UP HISTORY:                                               │ │
+│              │ │  Nov 1: Thank you email sent to Dr. Chen                          │ │
+│              │ │  Nov 15: 30-day check-in email sent                                │ │
+│              │ │  Dec 1: Brief update on GHIS recent work sent                     │ │
+│              │ │  Next: Dec 15 (60-day check-in)                                  │ │
+│              │ │                                                                     │ │
+│              │ │  DECISION PROBABILITY:                                            │ │
+│              │ │  • Historical WHO success rate: 22%                              │ │
+│              │ │  • This writer's success rate: 67%                              │ │
+│              │ │  • Similar grant success rate: 45%                              │ │
+│              │ │  • Predicted probability: 58%                                   │ │
+│              │ │                                                                     │ │
+│              │ │  PREPARATION NEEDED IF AWARDED:                                   │ │
+│              │ │  • Contracting: 2-4 months                                       │ │
+│              │ │  • WHO partnership agreement required                            │ │
+│              │ │  • Budget revision likely                                        │ │
+│              │ │                                                                     │ │
+│              │ │  [Log Decision] [Request Update] [Add Note] [Archive]            │ │
+│              │ └─────────────────────────────────────────────────────────────────────┘ │
+└──────────────┴─────────────────────────────────────────────────────────────────────────┘
+```
+
+### **Decision Analytics Dashboard**
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ DECISION ANALYTICS                                      │
+├─────────────────────────────────────────────────────────┤
+│ SUCCESS RATES BY CLASS:                                 │
+│ Class 1 (Global): ███▌ 22%                             │
+│ Class 3 (Foundations): █████▌ 38%                      │
+│ Class 4 (Hybrid): ████▌ 29%                            │
+│ Class 5 (Innovation): ██████▌ 42%                      │
+│                                                        │
+│ TOP PERFORMING WRITERS:                                │
+│ 1. Maria Chen: ██████████ 67% (12 grants)             │
+│ 2. James Lee: ████████▌ 58% (19 grants)               │
+│ 3. Alex Johnson: ███████▌ 52% (8 grants)              │
+│                                                        │
+│ DECISION TIMELINES:                                    │
+│ Fastest: 23 days (Class 5 - Innovation Challenge)     │
+│ Slowest: 287 days (Class 1 - WHO Global)             │
+│ Average: 98 days                                       │
+│                                                        │
+│ SEASONAL PATTERNS:                                     │
+│ Q1 Success: 45% | Q2: 38% | Q3: 32% | Q4: 41%         │
+│                                                        │
+│ [Download Full Report] [Compare to Industry]          │
+└─────────────────────────────────────────────────────────┘
+```
+
+---
+
+## **8. DATA SCHEMAS**
+
+### **Writer Assignment Table:**
+
+```sql
+CREATE TABLE WriterAssignments (
+    assignment_id UUID PRIMARY KEY,
+    grant_fingerprint CHAR(32),
+    writer_id VARCHAR(50),
+    assigned_at TIMESTAMP,
+    accepted_at TIMESTAMP,
+    complexity_level ENUM('simple', 'moderate', 'complex'),
+    estimated_hours INT,
+    actual_hours INT,
+    milestone_dates JSON,  -- {"kickoff": "2024-11-25", "draft1": "2024-12-16", ...}
+    current_milestone VARCHAR(50),
+    status ENUM('assigned', 'accepted', 'in_progress', 'completed', 'cancelled'),
+    quality_score DECIMAL(3,1),
+    reassignment_count INT DEFAULT 0,
+    notes TEXT
+);
+```
+
+### **Submission Tracking Table:**
+
+```sql
+CREATE TABLE SubmissionTracking (
+    tracking_id UUID PRIMARY KEY,
+    grant_fingerprint CHAR(32),
+    submitted_at TIMESTAMP,
+    submitted_by VARCHAR(100),
+    submission_method VARCHAR(50),  -- portal, email, mail
+    confirmation_proofs JSON,  -- {"screenshot_url": "...", "email_id": "...", "ref_number": "..."}
+    acknowledgement_received BOOLEAN,
+    acknowledgement_date DATE,
+    decision_eta DATE,
+    actual_decision_date DATE,
+    decision_outcome ENUM('awarded', 'declined', 'waitlisted', 'pending'),
+    decision_amount DECIMAL(12,2),  -- Actual amount if awarded
+    decision_feedback TEXT,
+    followup_log JSON,  -- Array of follow-up attempts and responses
+    lessons_learned TEXT,
+    success_factors JSON,
+    
+    -- Predictive analytics
+    predicted_outcome ENUM('awarded', 'declined'),
+    prediction_confidence DECIMAL(4,3),
+    similar_grants_reference JSON,
+    
+    INDEX idx_decision_eta (decision_eta),
+    INDEX idx_outcome (decision_outcome, submitted_at)
+);
+```
+
+---
+
+## **9. INTEGRATION WORKFLOW**
+
+```yaml
+complete_agent_workflow:
+  1. Grant Discovery Agent → finds grants
+  2. Grant Assessment Agent → scores and classifies
+  3. Grant Packaging Agent → creates dossiers
+  4. Writer Assignment Agent → assigns to writers
+  5. Writers → develop proposals
+  6. Submission Tracking Agent → tracks through decision
+  
+data_exchange:
+  - All agents write to central PostgreSQL database
+  - Real-time updates via websocket connections
+  - Nightly sync with CRM and financial systems
+  - Weekly reports to leadership dashboard
+
+alerting_system:
+  - Slack notifications for milestones reached
+  - Email digests for weekly updates
+  - SMS alerts for urgent deadlines (< 7 days)
+  - Dashboard warnings for bottlenecks
+```
+
+---
+
+## **10. SAMPLE OUTPUTS**
+
+### **Assignment Notification:**
+
+```json
+{
+  "to": "maria.chen@ghis.com",
+  "subject": "New Grant Assignment: WHO Innovation Challenge",
+  "assignment_id": "ASSIGN-WHO-2024-001",
+  "grant": {
+    "name": "WHO Innovation Challenge",
+    "funder": "WHO Innovation Hub",
+    "amount": "$50K-$150K",
+    "deadline": "2025-01-05",
+    "complexity": "moderate"
+  },
+  "requirements": {
+    "estimated_hours": 35,
+    "expertise_needed": ["global health", "digital health", "WHO guidelines"],
+    "milestones": {
+      "kickoff": "2024-11-25",
+      "research_complete": "2024-12-09",
+      "draft_1": "2024-12-16",
+      "final_submission": "2025-01-05"
+    }
+  },
+  "resources": {
+    "dossier_link": "https://ghis.sharepoint.com/dossiers/who_innovation",
+    "previous_success": "https://ghis.sharepoint.com/examples/who_2023",
+    "funder_style_guide": "https://ghis.sharepoint.com/guides/who_writing"
+  },
+  "action_required": "Please accept or decline within 24 hours",
+  "accept_link": "https://agent.ghis.com/assignments/accept/ASSIGN-WHO-2024-001",
+  "decline_link": "https://agent.ghis.com/assignments/decline/ASSIGN-WHO-2024-001"
+}
+```
+
+### **Submission Confirmation:**
+
+```json
+{
+  "grant_id": "WHO-2024-001",
+  "submission_date": "2024-10-15T14:30:00Z",
+  "confirmed_by": "Maria Chen",
+  "proofs": {
+    "screenshot": "https://ghis.sharepoint.com/screenshots/who_submission_20241015.png",
+    "confirmation_email": "msg12345@who.int",
+    "reference_number": "WHO-2024-8472",
+    "portal_status": "Submitted"
+  },
+  "next_steps": {
+    "thank_you_email": "due by 2024-10-17",
+    "30_day_checkin": "2024-11-14",
+    "decision_eta": "2025-01-15",
+    "expected_notification_window": "2025-01-08 to 2025-01-22"
+  },
+  "auto_generated": {
+    "thank_you_template": "https://agent.ghis.com/templates/thank_you_who",
+    "calendar_invites": ["30-day checkin", "60-day update", "decision window"],
+    "crm_update": "Automatically updated in Salesforce"
+  }
+}
+```
+
+---
+
+**This complete system now includes:**  
+🔍 **Discovery Agent** → finds opportunities  
+📊 **Assessment Agent** → scores and prioritizes  
+📦 **Packaging Agent** → creates submission-ready dossiers  
+🖋️ **Writer Assignment Agent** → manages human workflow  
+📈 **Submission Tracking Agent** → monitors through decision  
+
+**Total agents: 5** | **End-to-end automation** from discovery to decision tracking
+
+Would you like me to add **contract management** or **post-award implementation tracking** agents next?

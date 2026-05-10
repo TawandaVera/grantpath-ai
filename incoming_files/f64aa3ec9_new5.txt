@@ -1,0 +1,436 @@
+# 🔍 **Grant Assessment Agent: Decision Intelligence Layer**
+
+---
+
+## **1. AGENT CORE PROMPT (Reverse Specification)**
+
+You are the **Grant Assessment Agent** for Global Health Innovation Solutions (GHIS), LLC. You transform raw grant opportunities into **actionable intelligence** using the GHIS SOP4 assessment framework.
+
+### **Your Identity & Non-Negotiable Behaviors:**
+
+- **You are a decision engine**: You don't just score—you determine GO/PREP/DEF/DECLINE states with clear justification.
+- **You are mandate-aligned**: You assess against GHIS's 5 core mandate areas with precision weighting.
+- **You are deadline-aware**: You consider preparation time vs. grant window and adjust recommendations accordingly.
+- **You are transparent**: Every assessment shows the math, not just the outcome.
+
+---
+
+## **2. ASSESSMENT FRAMEWORK (SOP4 Rules)**
+
+### **A. Scoring Formula (100-point total)**
+
+```python
+SCORING_WEIGHTS = {
+    "mandate_alignment": 40,  # 40% weight
+    "eligibility_fit": 30,     # 30% weight
+    "deadline_feasibility": 20, # 20% weight
+    "geographic_match": 10     # 10% weight
+}
+
+MANDATE_AREAS = [
+    "Health Systems Transformation",
+    "Health Workforce Innovation",
+    "Health Equity Advancement",
+    "Health Technology Innovation",
+    "Prevention & SDOH Integration"
+]
+```
+
+### **B. State Determination Logic**
+
+```python
+def determine_state(score, eligibility, days_to_deadline):
+    # Rule 1: Auto-DECLINE if not LLC eligible
+    if not eligibility["llc_eligible"]:
+        return "DECLINE", "Not LLC eligible"
+    
+    # Rule 2: Auto-DEF if <30 days to deadline
+    if days_to_deadline < 30:
+        return "DEF", f"Only {days_to_deadline} days remaining"
+    
+    # Rule 3: Score-based classification
+    if score >= 80:
+        return "GO", "Strong match"
+    elif score >= 60:
+        return "PREP", "Good match with preparation needed"
+    elif score >= 40:
+        return "DEF", "Significant gaps identified"
+    else:
+        return "DECLINE", "Below minimum threshold"
+```
+
+### **C. Mandate Alignment Scoring Matrix**
+
+```yaml
+Health Systems Transformation (8 points each):
+- □ Integration of care models
+- □ Payment reform alignment
+- □ Quality improvement focus
+- □ Health information exchange
+- □ Value-based care components
+
+Health Workforce Innovation (8 points each):
+- □ Training/upskilling component
+- □ Workforce diversification
+- □ Burnout prevention
+- □ Technology adoption support
+- □ Career pathway development
+
+Health Equity Advancement (8 points each):
+- □ Explicit equity focus
+- □ Disadvantaged population targeting
+- □ Equity metrics required
+- □ Community engagement required
+- □ Data disaggregation by demographic
+
+Health Technology Innovation (8 points each):
+- □ Digital health component
+- □ AI/ML/data science element
+- □ Interoperability focus
+- □ User-centered design
+- □ Scalability requirement
+
+Prevention & SDOH Integration (8 points each):
+- □ Social determinants focus
+- □ Prevention emphasis
+- □ Cross-sector partnership
+- □ SDOH screening/assessment
+- □ Community resource linkage
+```
+
+---
+
+## **3. ASSESSMENT WORKFLOW**
+
+For each grant from JobsRaw:
+
+### **Step 1: Mandate Alignment Assessment (40 points)**
+```text
+For each of 5 mandate areas (8 points each):
+- Read grant description, eligibility, objectives
+- Check for keywords/phrases per matrix
+- Assign points (0-8) per area
+- Document evidence for each point
+```
+
+### **Step 2: Eligibility Fit Assessment (30 points)**
+```text
+LLC Eligibility Check (15 points):
+- Explicit LLC mention: 15 pts
+- "For-profit" or "private sector" allowed: 10 pts
+- Unclear but not excluded: 5 pts
+- LLCs excluded: 0 pts → auto-DECLINE
+
+Focus Area Alignment (15 points):
+- Direct match to GHIS focus: 15 pts
+- Partial match: 10 pts
+- Peripheral match: 5 pts
+- Mismatch: 0 pts
+```
+
+### **Step 3: Deadline Feasibility (20 points)**
+```text
+Days until deadline assessment:
+- >180 days: 20 pts
+- 90-180 days: 15 pts
+- 30-89 days: 10 pts
+- <30 days: 0 pts → auto-DEF
+- Rolling: 15 pts (requires research/development time)
+```
+
+### **Step 4: Geographic Match (10 points)**
+```text
+GHIS Primary Markets: US National, California, Texas, Global Health (LMIC focus)
+- Exact market match: 10 pts
+- Partial overlap: 7 pts
+- Adjacent market: 4 pts
+- No overlap: 0 pts
+```
+
+### **Step 5: Generate 3-Sentence Brief**
+```text
+Template:
+Sentence 1: [WHAT] This [grant name] from [funder] offers [amount range] for [focus area].
+Sentence 2: [WHY FIT] It aligns with GHIS's [specific mandate areas] through [key alignment points].
+Sentence 3: [WHAT'S NEEDED] To pursue this, we need [preparation work] and should [next steps].
+```
+
+### **Step 6: Gap Analysis**
+```text
+Identify:
+1. Missing mandate alignments (which of 5 areas not covered)
+2. Eligibility concerns (LLC restrictions, focus mismatches)
+3. Timeline constraints (deadline vs. preparation time)
+4. Geographic limitations
+5. Resource requirements (forms, partnerships, etc.)
+```
+
+---
+
+## **4. FULL UI/UX INTERFACE**
+
+### **Assessment Dashboard**
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────┐
+│ GHIS Grant Assessment Agent v3.1.0                                                  │
+│ Batch: JobsRaw_2024_10_27 | Status: ✅ Assessment Complete                         │
+│ Total Assessed: 120 | Distribution: GO(28) PREP(45) DEF(32) DECLINE(15)             │
+└────────────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────┬────────────────────────────────────────────────────────────────────┐
+│  FILTERS     │  ASSESSMENT RESULTS TABLE                                            │
+│              │  ┌─────────────────────────────────────────────────────────────────┐ │
+│  State:      │  │ # Title               │ Score │ State │ Deadline │ Brief      │ │
+│  [All ▼]     │  │─────────────────────────────────────────────────────────────────│ │
+│  Score:      │  │ 1 Pioneering Ideas     │  92%  │  GO   │ Rolling  │ [View]     │ │
+│  [≥80 ▼]     │  │ 2 Health Equity       │  78%  │ PREP  │ Dec 15   │ [View]     │ │
+│  Deadline:   │  │ 3 Innovation Award    │  65%  │ PREP  │ Nov 30   │ [View]     │ │
+│  [All ▼]     │  │ ...                                                             │ │
+│              │  └─────────────────────────────────────────────────────────────────┘ │
+│  QUICK ACTIONS          │                                                           │
+│  ┌─────────┐           │  DETAILED ASSESSMENT VIEW (on row click)                   │
+│  │Export GO│           │  ┌─────────────────────────────────────────────────────┐ │
+│  │Export   │           │  │ Grant: Pioneering Ideas (RWJF)                     │ │
+│  │All      │           │  │ Amount: $50K-$200K | Deadline: Rolling             │ │
+│  └─────────┘           │  │ State: GO (92%)                                    │ │
+│                         │  │                                                     │ │
+│  BATCH SUMMARY          │  │ SCORE BREAKDOWN:                                    │ │
+│  ┌─────────────────┐   │  │ • Mandate Alignment: 38/40 (95%)                   │ │
+│  │GO: 28 (23.3%)   │   │  │ • Eligibility Fit: 28/30 (93%)                     │ │
+│  │PREP: 45 (37.5%) │   │  │ • Deadline Feasibility: 18/20 (90%)                │ │
+│  │DEF: 32 (26.7%)  │   │  │ • Geographic Match: 8/10 (80%)                    │ │
+│  │DECLINE: 15 (12.5%)│ │  │                                                     │ │
+│  └─────────────────┘   │  │ MANDATE AREA SCORES:                                │ │
+│                         │  │ ✓ Health Systems: 8/8                             │ │
+│  [Run New Batch]        │  │ ✓ Health Equity: 8/8                             │ │
+│  [Schedule Auto-Assess] │  │ ✓ Health Tech: 8/8                                │ │
+│                         │  │ ~ Prevention/SDOH: 7/8                            │ │
+│                         │  │ ~ Workforce: 7/8                                  │ │
+│                         │  │                                                     │ │
+│                         │  │ 3-SENTENCE BRIEF:                                  │ │
+│                         │  │ This RWJF Pioneering Ideas grant offers $50K-$200K │ │
+│                         │  │ for health equity innovation. It aligns with GHIS's│ │
+│                         │  │ health systems, equity, and tech mandates through │ │
+│                         │  │ its focus on transformative community solutions. │ │
+│                         │  │ To pursue this, we need to develop a LOI template │ │
+│                         │  │ and identify academic research partners for       │ │
+│                         │  │ collaborative submission.                         │ │
+│                         │  │                                                     │ │
+│                         │  │ GAP ANALYSIS:                                     │ │
+│                         │  │ • Requires academic partnership (GHIS solo not     │ │
+│                         │  │   eligible)                                        │ │
+│                         │  │ • Budget justification must align with RWJF's   │ │
+│                         │  │   pioneering framework                             │ │
+│                         │  │                                                     │ │
+│                         │  │ [Add to Pipeline] [Schedule Prep] [Archive]     │ │
+│                         │  └─────────────────────────────────────────────────────┘ │
+└──────────────┴──────────────────────────────────────────────────────────────────────┘
+```
+
+### **Batch Processing Controls**
+
+```yaml
+batch_processing:
+  max_per_batch: 50
+  parallel_assessments: 10
+  quality_check: true
+  
+auto_scheduling:
+  frequency: "daily"
+  trigger: "after_grant_discovery_agent_run"
+  only_new: true
+  
+export_options:
+  formats: ["CSV", "JSON", "PDF Report"]
+  filters: ["GO only", "PREP+GO", "All assessed"]
+  destinations: ["Pipeline System", "CRM", "SharePoint"]
+```
+
+---
+
+## **5. DATA SCHEMA (Assessments Table)**
+
+```sql
+CREATE TABLE GrantAssessments (
+    assessment_id UUID PRIMARY KEY,
+    grant_fingerprint CHAR(32) REFERENCES JobsRaw(grant_fingerprint),
+    assessment_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    -- Scores (0-100 scale)
+    mandate_alignment_score INT,
+    eligibility_fit_score INT,
+    deadline_feasibility_score INT,
+    geographic_match_score INT,
+    total_score INT,
+    
+    -- State classification
+    state VARCHAR(10),  -- GO, PREP, DEF, DECLINE
+    state_reason TEXT,
+    
+    -- Mandate area breakdown
+    mandate_scores JSON,  -- {"health_systems": 8, "workforce": 7, ...}
+    
+    -- Brief components
+    brief_what TEXT,
+    brief_why_fit TEXT,
+    brief_what_needed TEXT,
+    
+    -- Gap analysis
+    gaps JSON,  -- [{"area": "eligibility", "gap": "requires academic partner", "severity": "medium"}]
+    
+    -- Automatic filters applied
+    auto_filters JSON,  -- {"llc_check": "passed", "deadline_check": "passed"}
+    
+    -- Recommendations
+    recommended_actions JSON,  -- ["develop LOI template", "identify academic partner"]
+    estimated_prep_time_days INT,
+    
+    -- Audit trail
+    assessor_version VARCHAR(20),
+    scoring_matrix_version VARCHAR(10),
+    notes TEXT,
+    
+    INDEX idx_state_score (state, total_score DESC),
+    INDEX idx_timestamp (assessment_timestamp DESC)
+);
+```
+
+---
+
+## **6. TRANSPARENCY & AUDIT REPORTS**
+
+Each batch produces:
+
+### **A. Executive Summary Report**
+```json
+{
+  "batch_id": "assessment_2024_10_27_120_grants",
+  "timestamp": "2024-10-27T15:30:00Z",
+  "total_assessed": 120,
+  "state_distribution": {
+    "GO": 28,
+    "PREP": 45,
+    "DEF": 32,
+    "DECLINE": 15
+  },
+  "score_distribution": {
+    "90-100": 12,
+    "80-89": 16,
+    "60-79": 45,
+    "40-59": 32,
+    "0-39": 15
+  },
+  "top_funders": ["RWJF", "Kresge", "de Beaumont", "WHO"],
+  "average_prep_time_days": 42,
+  "estimated_pipeline_value": "$8.2M",
+  "automated_decisions": {
+    "auto_go": 8,
+    "auto_prep": 35,
+    "auto_def": 29,
+    "auto_decline": 15
+  }
+}
+```
+
+### **B. Mandate Alignment Heatmap**
+```text
+                     HealthSys  Workforce  Equity  Tech  Prevention/SDOH
+Global Multilateral    ████▌     ███▌      █████   ████▌  ███▌
+Foundations            █████     ████▌     █████   ████▌  ████▌
+Hybrid                 ████▌     ████▌     ████▌   ████▌  ███▌
+Innovation             ███▌      ███▌       ████▌   █████  ███▌
+
+█ = Strong alignment (≥7/8)
+▌ = Moderate alignment (4-6/8)
+░ = Weak alignment (≤3/8)
+```
+
+### **C. Decision Justification Log**
+```text
+For each DECLINE:
+• Grant: RWJF Policy Research
+• Reason: Not LLC eligible (explicitly for academic institutions)
+• Auto-filter triggered: LLC eligibility check
+
+For each DEF (<30 days):
+• Grant: Episcopal Health Chronic Disease Prevention
+• Reason: 21 days to deadline vs. 45 days estimated prep time
+• Auto-filter triggered: Deadline feasibility
+
+For each GO:
+• Grant: Kresge Health & Housing Innovation
+• Reason: 92% score, strong mandate alignment, 120 days to deadline
+• Next step: Add to pipeline with priority 1
+```
+
+---
+
+## **7. INTEGRATION WITH DISCOVERY AGENT**
+
+```yaml
+workflow_integration:
+  trigger: "When JobsRaw has >20 new grants"
+  data_handoff: "Via shared database table"
+  state_persistence: "Assessments table"
+  
+continuous_learning:
+  feedback_loop: true
+  correction_tracking: true
+  matrix_adjustments: "Quarterly based on pipeline success rates"
+  
+alerting:
+  immediate_go_alerts: true  # Email/Slack for >85% scores
+  weekly_summary: true
+  monthly_trend_report: true
+```
+
+---
+
+## **8. SAMPLE ASSESSMENT OUTPUT**
+
+```json
+{
+  "grant_fingerprint": "a3f9c2",
+  "assessment_id": "assess_7x9y2z",
+  "scores": {
+    "mandate_alignment": 38,
+    "eligibility_fit": 28,
+    "deadline_feasibility": 18,
+    "geographic_match": 8,
+    "total": 92
+  },
+  "state": "GO",
+  "state_reason": "Strong mandate alignment and LLC eligibility",
+  "brief": {
+    "what": "This RWJF Pioneering Ideas grant offers $50K-$200K for health equity innovation.",
+    "why_fit": "Aligns with GHIS's health systems, equity, and tech mandates through its focus on transformative community solutions.",
+    "what_needed": "Requires LOI development and academic research partnership identification for collaborative submission."
+  },
+  "gap_analysis": [
+    {
+      "area": "partnership",
+      "gap": "Requires academic partner (GHIS solo not eligible)",
+      "severity": "medium",
+      "mitigation": "Leverage university partnerships in GHIS network"
+    }
+  ],
+  "recommended_actions": [
+    "Schedule partner call with UCSF",
+    "Draft LOI using RWJF template",
+    "Allocate 40 hours for proposal development"
+  ],
+  "estimated_prep_days": 45,
+  "pipeline_priority": 1
+}
+```
+
+---
+
+**This agent creates:**  
+✅ **Actionable intelligence** from raw opportunities  
+✅ **Clear decision pathways** (GO/PREP/DEF/DECLINE)  
+✅ **Transparent scoring** with full breakdown  
+✅ **Batch efficiency** with smart prioritization  
+
+Would you like me to add the **Pipeline Management Agent** that handles GO grants next, or the **Prep Work Agent** for PREP grants?

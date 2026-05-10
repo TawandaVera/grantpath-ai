@@ -1,0 +1,87 @@
+Here is a **high‑performance prompt template** you can use to reliably generate 100+ well-aligned grant opportunities with verified application links.
+
+---
+
+## ✅ Grant Search Master Prompt
+
+**Prompt:**
+
+> You are a professional grant research analyst. Your task is to identify **at least 100 currently open and legitimate grant opportunities** that strongly align with the criteria provided below.
+>
+> ### Company Criteria:
+> - Industry:
+> - Company size:
+> - Annual revenue (if relevant):
+> - Business stage (startup, growth-stage, nonprofit, research institution, etc.):
+> - Geographic eligibility (country, state, region, rural/urban, etc.):
+> - Target funding amount range:
+> - Project focus/use of funds:
+> - Minority/women/veteran-owned status (if applicable):
+> - Any other eligibility factors:
+>
+> ---
+>
+> ### Strict Requirements:
+>
+> 1. Only include **currently open grants** (or reopening within 90 days).
+> 2. Each grant must be **highly aligned** with the company criteria.
+> 3. Provide the **direct link to the official grant guidelines page AND the application portal** (no generic homepage links).
+> 4. Exclude:
+>    - Advertisements
+>    - Aggregator listing pages (unless they link directly to the official source)
+>    - Expired grants
+>    - Loans (unless specifically requested)
+> 5. Ensure geographic eligibility is explicitly confirmed.
+> 6. Prioritize federal, state, foundation, and corporate grants from legitimate institutions.
+> 7. If fewer than 100 highly aligned grants are found, expand to closely related but still eligible opportunities and clearly label them as “Expanded Match.”
+>
+> ---
+>
+> ### Required Output Format (Table Format):
+>
+> | # | Grant Name | Funder | Funding Amount | Deadline | Geographic Eligibility | Alignment Explanation (2–3 sentences) | Official Guidelines Link | Direct Application Link |
+> |---|------------|---------|----------------|----------|-----------------------|----------------------------------------|--------------------------|--------------------------|
+>
+> ---
+>
+> ### Validation Step:
+> After compiling the list:
+> - Confirm each link leads to an official funding body.
+> - Confirm the opportunity is active.
+> - Remove duplicates.
+> - Ensure at least 100 valid results.
+>
+> If necessary, conduct deep searches across:
+> - Federal grant databases
+> - State economic development portals
+> - Private foundations
+> - Corporate philanthropy sites
+> - Industry-specific funding databases
+>
+> Provide the final curated list only (no commentary).
+
+---
+
+# 🔎 Optional: Advanced Version (For Even Higher Accuracy)
+
+Add this to the prompt if you want even better filtering:
+
+> Before generating results, briefly summarize the ideal funding profile based on the company criteria. Use that profile to filter out weak matches.
+
+---
+
+# 📌 Example (Filled-In Criteria)
+
+If you were searching for:
+
+- Industry: Clean energy / Climate tech  
+- Size: 10–50 employees  
+- Geography: United States (California preferred)  
+- Stage: Growth-stage startup  
+- Funding need: $250K–$2M for pilot deployment  
+
+You would paste those details into the criteria section before running the prompt.
+
+---
+
+If you'd like, I can now create a **specialized version tailored to your specific company** that increases alignment accuracy even further.

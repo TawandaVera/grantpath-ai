@@ -1,0 +1,67 @@
+{
+  "type": "object",
+  "properties": {
+    "tier": {
+      "type": "string",
+      "enum": [
+        "tier_1",
+        "tier_2",
+        "tier_3"
+      ]
+    },
+    "stage": {
+      "type": "string"
+    },
+    "grant_id": {
+      "type": "string"
+    },
+    "application_id": {
+      "type": "string"
+    },
+    "section": {
+      "type": "string"
+    },
+    "action_required": {
+      "type": "string"
+    },
+    "data": {
+      "type": "object"
+    },
+    "presented_at": {
+      "type": "string"
+    },
+    "decided_at": {
+      "type": "string"
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "approve",
+        "edit",
+        "regenerate",
+        "verify",
+        "pause",
+        "block",
+        "auto_approved",
+        "pending"
+      ]
+    },
+    "decided_by": {
+      "type": "string"
+    },
+    "instructions": {
+      "type": "string"
+    },
+    "auto_action_at": {
+      "type": "string"
+    },
+    "escalated": {
+      "type": "boolean"
+    },
+    "confidence": {
+      "type": "string"
+    }
+  },
+  "required": [],
+  "name": "HILCheckpoint"
+}

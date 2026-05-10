@@ -1,0 +1,37 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string"
+    },
+    "content_hash": {
+      "type": "string"
+    },
+    "content": {
+      "type": "object"
+    },
+    "change_log": {
+      "type": "string"
+    },
+    "changed_by": {
+      "type": "string"
+    },
+    "sections_updated": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "is_current": {
+      "type": "boolean"
+    },
+    "conflicts_detected": {
+      "type": "array"
+    },
+    "diff_from_previous": {
+      "type": "string"
+    }
+  },
+  "required": [],
+  "name": "MasterNarrative"
+}

@@ -1,0 +1,59 @@
+{
+  "type": "object",
+  "properties": {
+    "grant_id": {
+      "type": "string"
+    },
+    "application_id": {
+      "type": "string"
+    },
+    "outcome": {
+      "type": "string",
+      "enum": [
+        "awarded",
+        "declined_by_funder",
+        "withdrawn",
+        "waitlisted",
+        "pending"
+      ]
+    },
+    "award_amount": {
+      "type": "number"
+    },
+    "hours_invested": {
+      "type": "number"
+    },
+    "cost_invested": {
+      "type": "number"
+    },
+    "funder_name": {
+      "type": "string"
+    },
+    "class_id": {
+      "type": "string"
+    },
+    "state_at_submission": {
+      "type": "string"
+    },
+    "mandate_alignment_score": {
+      "type": "number"
+    },
+    "eligibility_fit_score": {
+      "type": "number"
+    },
+    "deadline_feasibility_score": {
+      "type": "number"
+    },
+    "geographic_match_score": {
+      "type": "number"
+    },
+    "final_overall_score": {
+      "type": "number"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [],
+  "name": "GrantOutcome"
+}

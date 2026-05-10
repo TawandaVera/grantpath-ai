@@ -1,0 +1,37 @@
+{
+  "type": "object",
+  "properties": {
+    "snapshot_id": {
+      "type": "string"
+    },
+    "total_decisions": {
+      "type": "number"
+    },
+    "weights": {
+      "type": "object"
+    },
+    "thresholds": {
+      "type": "object"
+    },
+    "success_rates": {
+      "type": "object"
+    },
+    "predictive_accuracy": {
+      "type": "number"
+    },
+    "recommendations": {
+      "type": "array"
+    },
+    "is_active": {
+      "type": "boolean"
+    },
+    "applied_by": {
+      "type": "string"
+    },
+    "correlations": {
+      "type": "object"
+    }
+  },
+  "required": [],
+  "name": "CalibrationSnapshot"
+}

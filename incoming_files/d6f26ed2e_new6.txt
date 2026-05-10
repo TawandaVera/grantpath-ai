@@ -1,0 +1,503 @@
+# 📦 **Grant Packaging Agent: Submission-Ready Dossier Factory**
+
+---
+
+## **1. AGENT CORE PROMPT (Reverse Specification)**
+
+You are the **Grant Packaging Agent** for Global Health Innovation Solutions (GHIS), LLC. You transform assessment decisions into **submission-ready packages** that move from pipeline to portal.
+
+### **Your Identity & Non-Negotiable Behaviors:**
+
+- **You are a packaging factory**: You convert "GO" and "PREP" grants into standardized, complete dossiers.
+- **You are portal-aware**: You extract exact portal requirements and pre-fill what's possible.
+- **You are compliance-obsessed**: You create checklists that ensure no eligibility step is missed.
+- **You are CEO-focused**: You distill complexity into 30-second executive summaries.
+
+---
+
+## **2. PACKAGING WORKFLOW**
+
+### **Step 1: Selection Criteria (Top 20 per class)**
+
+```python
+# Priority Ranking Algorithm
+def select_top_grants(grants, class_id):
+    # Filter: Only GO and PREP states
+    eligible = [g for g in grants if g.state in ["GO", "PREP"] and g.class_id == class_id]
+    
+    # Sort: Primary by match_score DESC, secondary by deadline ASC
+    sorted_grants = sorted(eligible, key=lambda x: (-x.match_score, x.deadline))
+    
+    # Return top 20 per class
+    return sorted_grants[:20]
+```
+
+### **Step 2: Dossier Components (For Each Grant)**
+
+#### **A. Dossier Summary (One-Pager Template)**
+```markdown
+# GRANT DOSSIER: [Grant Name]
+## Funder Profile
+- **Organization:** [Funder Name]
+- **Typical Grant Size:** $[Range]
+- **Success Rate:** [Estimate based on historical data]
+- **Review Cycle:** [Months]
+- **Key Contact:** [Program Officer if available]
+
+## Opportunity Overview
+- **Amount:** $[Min] - $[Max]
+- **Deadline:** [Date] ([Days remaining] days)
+- **Decision Timeline:** [Expected notification date]
+- **Funding Duration:** [Months/Years]
+- **Match Requirement:** [Cash/In-kind percentage]
+
+## Strategic Fit
+- **GHIS Mandate Alignment:** [Primary mandate areas]
+- **Competitive Advantage:** [Why GHIS is uniquely positioned]
+- **Past GHIS Success:** [Similar grants previously won]
+- **Partnership Leverage:** [Existing relationships with funder]
+```
+
+#### **B. Eligibility Checklist (Validation Matrix)**
+```yaml
+SAM.gov Registration:
+- [ ] Active registration: https://sam.gov
+- [ ] UEI number: _______________
+- [ ] CAGE code: _______________
+- [ ] Expiration date: _________
+- [ ] NAICS codes updated: [ ]
+- [ ] PSC codes added: [ ]
+
+DUNS Number:
+- [ ] DUNS number: _______________
+- [ ] Business verification complete: [ ]
+- [ ] Address matches IRS filing: [ ]
+
+LLC Verification:
+- [ ] Articles of Organization: [ ]
+- [ ] Operating Agreement: [ ]
+- [ ] EIN/Tax ID: _______________
+- [ ] Good standing with state: [ ]
+- [ ] Registered agent current: [ ]
+
+Funder-Specific:
+- [ ] Previous grant history: [ ]
+- [ ] Required certifications: [ ]
+- [ ] Insurance coverage: [ ]
+- [ ] Financial statements: [ ]
+- [ ] Board list: [ ]
+
+Status: □ Complete  □ In Progress  □ Not Started
+```
+
+#### **C. Required Forms List with Links**
+```markdown
+## Required Forms & Templates
+### Mandatory Forms:
+1. [Form Name](direct_link_to_form.pdf) - [Purpose]
+   - **Status:** □ Not Started □ Draft □ Final
+   - **GHIS Template:** [link_to_GHIS_template]
+   - **Notes:** [Specific requirements]
+
+2. [Budget Template](direct_link_to_budget.xlsx)
+   - **GHIS Custom Version:** [link_to_GHIS_version]
+   - **Allowed Categories:** [List]
+   - **Indirect Rate:** [% allowed]
+
+3. [Letter of Intent Template](direct_link_to_LOI.docx)
+   - **Word Count Limit:** [Number]
+   - **Required Elements:** [List]
+   - **Submission Method:** [Portal/Email]
+
+### Supporting Documents:
+- [IRS Form W-9](link)
+- [Financial Statements](link)
+- [Board of Directors List](link)
+- [CVs/Resumes](link)
+- [Letters of Support Templates](link)
+```
+
+#### **D. Portal-Ready Text Snippets**
+```markdown
+## Portal-Ready Content Blocks
+### Organization Description (500 characters):
+[GHIS LLC is a health innovation consultancy specializing in transforming health systems through workforce development, equity advancement, and technology integration. We bridge public health, clinical care, and community resources to create sustainable health solutions. Since 2020, we've implemented $3.2M in health innovation projects across 14 states.]
+
+### Capability Statement (750 characters):
+[GHIS delivers measurable impact through: 1) Health system redesign consulting, 2) Digital health implementation, 3) Health equity program development, and 4) Workforce training innovation. Our team includes former public health directors, health informaticists, and community engagement specialists. We maintain partnerships with 8 academic institutions and 22 community-based organizations.]
+
+### Project Narrative Outline:
+**Problem Statement:**
+[2-3 sentences on the health challenge]
+
+**Solution Approach:**
+[3-4 bullet points on GHIS's proposed intervention]
+
+**Innovation Components:**
+[Specific innovations in methodology, technology, or partnership]
+
+**Evaluation Plan:**
+[Mixed-methods approach with specific metrics]
+
+**Sustainability Strategy:**
+[Post-grant funding and scale plan]
+
+### Past Performance Highlights (bullet points):
+- Implemented $750K RWJF grant achieving 32% reduction in health disparities
+- Developed statewide health workforce training program reaching 1,200 providers
+- Created digital health platform serving 45,000 patients in underserved communities
+```
+
+### **Step 3: Executive Summary Format**
+```text
+Template:
+[Total Raw Grants Discovered] → [GO+PREP count] PREP ([percentage]%) ready for review
+
+Example: 
+"847 → 47 PREP (5%) ready for review"
+
+With breakdown:
+• Class 1 (Global): 12 grants, $1.8M potential
+• Class 3 (Foundations): 58 grants, $7.2M potential  
+• Class 4 (Hybrid): 18 grants, $2.1M potential
+• Class 5 (Innovation): 32 grants, $3.6M potential
+```
+
+---
+
+## **3. FULL UI/UX INTERFACE**
+
+### **Packaging Dashboard**
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────────────┐
+│ GHIS Grant Packaging Agent v4.2.0                                                        │
+│ Input: 120 assessed grants | Status: ✅ Packaging Complete                             │
+│ Output: 80 dossiers (20 per class) | CEO Summary: "120 → 73 PREP (61%) ready for review"│
+└─────────────────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────┬─────────────────────────────────────────────────────────────────────────┐
+│  CLASS FILTER│  DOSSIER QUEUE                                                           │
+│              │  ┌─────────────────────────────────────────────────────────────────────┐ │
+│  [Class 1 ▼] │  │ # Grant                    │ Status   │ Deadline  │ Actions        │ │
+│  [Class 3 □] │  │─────────────────────────────────────────────────────────────────────│ │
+│  [Class 4 □] │  │ 1 WHO Innovation Challenge │ ✅ Ready  │ Jan 05   │ [View] [Export]│ │
+│  [Class 5 □] │  │ 2 RWJF Pioneering Ideas   │ ⚠️ Incomplete Dec 31   │ [View] [Edit] │ │
+│              │  │ ...                                                             │ │
+│  [Select All]│  └─────────────────────────────────────────────────────────────────────┘ │
+│              │                                                                           │
+│  QUICK STATS │  ACTIVE DOSSIER VIEW (on selection)                                       │
+│  ┌─────────┐ │  ┌─────────────────────────────────────────────────────────────────────┐ │
+│  │Total: 80│ │  │ Grant: WHO Innovation Challenge                                    │ │
+│  │Ready: 64│ │  │ Class: Global Multilateral (1) | Status: GO (92%)                  │ │
+│  │Pending:16│ │  │ Deadline: Jan 05, 2025 (69 days)                                  │ │
+│  └─────────┘ │  │ Amount: $50K-$150K | Match: 92%                                   │ │
+│              │  │                                                                     │ │
+│  [Package All]│ │  │ ┌─────────────────────────────────────────────────────────────┐ │ │
+│  [Export Batch]│ │  │ │  DOSSIER SUMMARY                                         │ │ │
+│  [CEO Brief]   │ │  │ │  • Funder: WHO Innovation Hub                             │ │ │
+│              │ │  │ │  • Typical grant: $100K, 18-month cycle                   │ │ │
+│              │ │  │ │  • Strategic fit: Health tech + equity focus              │ │ │
+│              │ │  │ │  └─────────────────────────────────────────────────────────┘ │ │
+│              │ │  │ │                                                               │ │
+│              │ │  │ │  ELIGIBILITY CHECKLIST (4/8 complete)                        │ │
+│              │ │  │ │  [ ] SAM.gov active                                          │ │ │
+│              │ │  │ │  [✓] DUNS number obtained                                     │ │ │
+│              │ │  │ │  [✓] LLC verification complete                               │ │ │
+│              │ │  │ │  [ ] WHO partner registration                                │ │ │
+│              │ │  │ │  [View Complete Checklist]                                    │ │ │
+│              │ │  │ │                                                               │ │
+│              │ │  │ │  REQUIRED FORMS                                              │ │ │
+│              │ │  │ │  1. WHO Application Form [Download]                         │ │ │
+│              │ │  │ │  2. Budget Template [GHIS Version]                           │ │ │
+│              │ │  │ │  3. CV Template [Download]                                  │ │ │
+│              │ │  │ │                                                               │ │
+│              │ │  │ │  PORTAL-READY TEXT                                           │ │ │
+│              │ │  │ │  • Org Description (500 chars) [Copy]                       │ │ │
+│              │ │  │ │  • Capability Statement (750 chars) [Copy]                 │ │ │
+│              │ │  │ │  • Project Outline [View]                                   │ │ │
+│              │ │  │ │                                                               │ │
+│              │ │  │ │  [Mark Complete] [Assign to Writer] [Add to Calendar]      │ │ │
+│              │ │  └─────────────────────────────────────────────────────────────┘ │ │
+└──────────────┴─────────────────────────────────────────────────────────────────────────┘
+```
+
+### **Batch Export Interface**
+
+```yaml
+export_options:
+  format:
+    - Individual PDF dossiers
+    - Consolidated Excel tracker
+    - Zip file with all templates
+    
+  content_selection:
+    - Include all checklists
+    - Include portal text snippets
+    - Include form templates
+    - Include executive summary
+    
+  delivery:
+    - Upload to SharePoint
+    - Email to grant team
+    - Add to CRM pipeline
+    - Print-ready version
+```
+
+---
+
+## **4. DATA SCHEMA (Packages Table)**
+
+```sql
+CREATE TABLE GrantPackages (
+    package_id UUID PRIMARY KEY,
+    grant_fingerprint CHAR(32) REFERENCES JobsRaw(grant_fingerprint),
+    assessment_id UUID REFERENCES GrantAssessments(assessment_id),
+    packaging_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    -- Package Status
+    package_status ENUM('draft', 'ready', 'submitted', 'archived'),
+    completion_percentage INT,
+    
+    -- Dossier Components (stored as JSON for flexibility)
+    dossier_summary JSON,
+    eligibility_checklist JSON,
+    required_forms JSON,
+    portal_text JSON,
+    
+    -- Progress Tracking
+    checklist_completed_at TIMESTAMP,
+    forms_downloaded_at TIMESTAMP,
+    text_approved_at TIMESTAMP,
+    submitted_at TIMESTAMP,
+    
+    -- Assignments
+    assigned_to VARCHAR(100),
+    writer_assigned VARCHAR(100),
+    reviewer_assigned VARCHAR(100),
+    
+    -- Version Control
+    dossier_version INT DEFAULT 1,
+    last_modified_by VARCHAR(100),
+    last_modified_at TIMESTAMP,
+    
+    -- Audit
+    packaging_agent_version VARCHAR(20),
+    notes TEXT,
+    
+    INDEX idx_package_status (package_status),
+    INDEX idx_deadline_package (deadline, package_status),
+    INDEX idx_assigned (assigned_to, package_status)
+);
+```
+
+---
+
+## **5. MASTER TRACKING SPREADSHEET DATA**
+
+### **Column Structure for Excel Export:**
+
+| Column | Description | Example |
+|--------|-------------|---------|
+| A | Grant ID | WHO_2024_001 |
+| B | Grant Name | WHO Innovation Challenge |
+| C | Class | Global Multilateral |
+| D | Funder | WHO Innovation Hub |
+| E | Amount Range | $50K-$150K |
+| F | Deadline | 2025-01-05 |
+| G | Days Remaining | 69 |
+| H | Match Score | 92% |
+| I | State | GO |
+| J | Package Status | Ready |
+| K | Eligibility Status | 4/8 complete |
+| L | Forms Status | 3/5 downloaded |
+| M | Text Status | Approved |
+| N | Assigned To | J. Smith |
+| O | Writer Assigned | A. Johnson |
+| P | Review Due Date | 2024-11-15 |
+| Q | Submission Method | WHO Portal |
+| R | Submission Deadline | 2025-01-05 23:59 GMT |
+| S | Estimated Hours | 40 |
+| T | Priority Level | 1 |
+| U | Notes | Requires academic partner |
+
+### **Automated Formulas:**
+```excel
+=IF([Days Remaining]<30,"URGENT",IF([Days Remaining]<60,"HIGH","NORMAL"))
+=IF([Match Score]>=85,"PRIORITY 1",IF([Match Score]>=70,"PRIORITY 2","PRIORITY 3"))
+=[Estimated Hours]*[Hourly Rate]
+=COUNTIF([State Range],"GO") & " GO, " & COUNTIF([State Range],"PREP") & " PREP"
+```
+
+---
+
+## **6. CEO BRIEFING SUMMARY TEMPLATE**
+
+### **One-Pager Format:**
+
+```markdown
+# GRANT PIPELINE READINESS: [Date]
+## Executive Summary
+**Total Pipeline:** [Number] grants | **Potential Funding:** $[Amount]M
+**Ready for Submission:** [Number] grants | **Immediate Value:** $[Amount]M
+
+## Top 5 Opportunities (Priority Order)
+1. **[Grant Name]** - $[Amount] | [Funder]
+   - Match: [Score]% | Deadline: [Date]
+   - Status: [Package Status]
+   - Action Required: [Next Step]
+
+2. **[Grant Name]** - $[Amount] | [Funder]
+   - Match: [Score]% | Deadline: [Date]
+   - Status: [Package Status]
+   - Action Required: [Next Step]
+
+## Class Breakdown
+### Global Multilateral (Class 1)
+- **Total:** [Number] grants, $[Amount]M potential
+- **Ready:** [Number] grants, $[Amount]M immediate
+- **Top Funder:** [Funder Name]
+- **Key Deadline:** [Next Critical Date]
+
+### Foundations (Class 3)
+- **Total:** [Number] grants, $[Amount]M potential
+- **Ready:** [Number] grants, $[Amount]M immediate
+- **Top Funder:** [Funder Name]
+- **Key Deadline:** [Next Critical Date]
+
+## Resource Requirements
+- **Writer Hours Needed:** [Number] hours
+- **Review Capacity:** [Number] grants/week
+- **Critical Gaps:** [List of missing requirements]
+- **Budget for Submissions:** $[Amount]
+
+## Recommended Actions
+1. **Approve:** [List of grants ready for writer assignment]
+2. **Accelerate:** [List of grants needing immediate attention]
+3. **Defer:** [List of grants to postpone]
+4. **Invest:** [Resources needed for success]
+
+---
+*Generated by GHIS Grant Packaging Agent v4.2.0 | [Link to Full Dashboard]*
+```
+
+### **Dashboard Widget View:**
+```
+┌─────────────────────────────────────────────┐
+│ CEO BRIEF: Grant Readiness                   │
+├─────────────────────────────────────────────┤
+│ 📊 120 grants assessed                       │
+│ ✅ 73 PREP (61%) ready for review            │
+│ 🎯 28 GO grants packaged                     │
+│ 💰 $14.7M potential funding                  │
+│ ⏰ 47 days avg. to deadline                  │
+│                                              │
+│ 🏆 TOP 3 PRIORITY GRANTS:                    │
+│ 1. WHO Innovation ($150K) - 69 days left   │
+│ 2. RWJF Pioneering ($200K) - Rolling        │
+│ 3. Kresge Health Equity ($250K) - 49 days   │
+│                                              │
+│ ⚠️ ACTION REQUIRED:                         │
+│ • Approve 5 grants for writer assignment    │
+│ • Complete SAM.gov registration (3 pending) │
+│                                              │
+│ [View Full Report] [Approve All] [Schedule]│
+└─────────────────────────────────────────────┘
+```
+
+---
+
+## **7. INTEGRATION WITH PREVIOUS AGENTS**
+
+```yaml
+data_flow:
+  source: "GrantAssessments table with GO/PREP states"
+  trigger: "Daily at 8 AM ET or when >10 new GO/PREP grants"
+  dependencies:
+    - "Grant Discovery Agent must have run"
+    - "Grant Assessment Agent must have completed batch"
+    
+automation_rules:
+  auto_package:
+    - "All GO grants with score >85%"
+    - "PREP grants with <45 days to deadline"
+    - "Grants from priority funders (RWJF, Kresge, WHO)"
+    
+notification_triggers:
+  - "When dossier reaches 100% completion"
+  - "When deadline is 30 days away"
+  - "When eligibility gaps are identified"
+  - "When CEO briefing is generated"
+```
+
+---
+
+## **8. SAMPLE OUTPUT: Complete Dossier**
+
+```json
+{
+  "grant_id": "WHO_2024_001",
+  "package_status": "ready",
+  "dossier_summary": {
+    "funder_profile": {
+      "organization": "WHO Innovation Hub",
+      "typical_grant_size": "$50K-$150K",
+      "success_rate": "15-20%",
+      "review_cycle": "3-4 months",
+      "key_contact": "Dr. Maria Chen, Program Officer"
+    },
+    "opportunity_overview": {
+      "amount": "$50,000-$150,000",
+      "deadline": "2025-01-05",
+      "decision_timeline": "April 2025",
+      "funding_duration": "18 months",
+      "match_requirement": "20% cash or in-kind"
+    },
+    "strategic_fit": {
+      "ghis_mandate_alignment": ["Health Technology Innovation", "Health Equity Advancement"],
+      "competitive_advantage": "GHIS has existing WHO collaborations and digital health implementation expertise",
+      "past_success": "Similar $100K WHO grant implemented in 2023",
+      "partnership_leverage": "UCSF School of Medicine partnership available"
+    }
+  },
+  "eligibility_checklist": {
+    "completed": 4,
+    "total": 8,
+    "items": [
+      {"task": "SAM.gov registration", "status": "pending", "due_date": "2024-11-15"},
+      {"task": "DUNS number verification", "status": "complete", "completed_date": "2024-10-20"},
+      {"task": "LLC documentation", "status": "complete", "completed_date": "2024-10-20"},
+      {"task": "WHO partner registration", "status": "pending", "due_date": "2024-11-30"}
+    ]
+  },
+  "required_forms": [
+    {
+      "name": "WHO Innovation Challenge Application",
+      "url": "https://www.who.int/forms/innovation-challenge",
+      "status": "downloaded",
+      "ghis_template": "https://ghis.sharepoint.com/templates/who_innovation.docx"
+    }
+  ],
+  "portal_text": {
+    "org_description": "GHIS LLC is a health innovation consultancy specializing in transforming health systems through workforce development, equity advancement, and technology integration...",
+    "capability_statement": "GHIS delivers measurable impact through: 1) Health system redesign consulting, 2) Digital health implementation, 3) Health equity program development...",
+    "project_outline": "Problem: Health disparities in maternal health outcomes... Solution: Digital health platform for remote monitoring..."
+  },
+  "next_steps": [
+    "Complete SAM.gov registration by Nov 15",
+    "Assign writer for proposal development",
+    "Schedule internal review for Dec 1",
+    "Submit via WHO portal by Jan 1"
+  ]
+}
+```
+
+---
+
+**This agent creates:**  
+✅ **Submission-ready packages** with all components  
+✅ **Clear accountability** through checklists and assignments  
+✅ **Executive visibility** via CEO briefings  
+✅ **Process standardization** across all grant classes  
+
+Would you like me to add the **Writer Assignment Agent** or the **Submission Tracking Agent** next?
