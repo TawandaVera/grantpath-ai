@@ -1,0 +1,70 @@
+{
+  "type": "object",
+  "properties": {
+    "org_profile_id": {
+      "type": "string"
+    },
+    "grant_id": {
+      "type": "string"
+    },
+    "relevance_score": {
+      "type": "number"
+    },
+    "match_rationale": {
+      "type": "string"
+    },
+    "strengths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "concerns": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "recommended_action": {
+      "type": "string"
+    },
+    "estimated_competition_level": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "user_feedback": {
+      "type": "string",
+      "enum": [
+        "thumbs_up",
+        "thumbs_down",
+        "neutral"
+      ]
+    },
+    "pipeline_stage": {
+      "type": "string",
+      "enum": [
+        "Discovered",
+        "Evaluating",
+        "Preparing",
+        "Drafting",
+        "Internal Review",
+        "Final Review",
+        "Submitted",
+        "Awaiting Decision",
+        "Awarded",
+        "Declined",
+        "Reporting"
+      ]
+    },
+    "deadline": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [],
+  "name": "GrantMatch"
+}

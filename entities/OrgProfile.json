@@ -1,0 +1,63 @@
+{
+  "type": "object",
+  "properties": {
+    "org_name": {
+      "type": "string"
+    },
+    "org_type": {
+      "type": "string",
+      "enum": [
+        "nonprofit",
+        "edu",
+        "gov",
+        "tribal",
+        "small_biz",
+        "individual"
+      ]
+    },
+    "mission_statement": {
+      "type": "string"
+    },
+    "location_state": {
+      "type": "string"
+    },
+    "location_country": {
+      "type": "string"
+    },
+    "annual_budget": {
+      "type": "number"
+    },
+    "team_size": {
+      "type": "integer"
+    },
+    "focus_areas": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "funding_needs": {
+      "type": "string"
+    },
+    "capacity_statement": {
+      "type": "string"
+    },
+    "preferred_funders": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "uei_number": {
+      "type": "string"
+    },
+    "ein_number": {
+      "type": "string"
+    },
+    "sam_gov_active": {
+      "type": "boolean"
+    }
+  },
+  "required": [],
+  "name": "OrgProfile"
+}

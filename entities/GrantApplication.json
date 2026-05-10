@@ -1,0 +1,75 @@
+{
+  "type": "object",
+  "properties": {
+    "org_profile_id": {
+      "type": "string"
+    },
+    "grant_id": {
+      "type": "string"
+    },
+    "grant_match_id": {
+      "type": "string"
+    },
+    "pipeline_stage": {
+      "type": "string",
+      "enum": [
+        "Discovered",
+        "Evaluating",
+        "Preparing",
+        "Drafting",
+        "Internal Review",
+        "Final Review",
+        "Submitted",
+        "Awaiting Decision",
+        "Awarded",
+        "Declined",
+        "Reporting"
+      ]
+    },
+    "deadline": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "sections": {
+      "type": "object",
+      "description": "Map of section name -> drafted content"
+    },
+    "compliance_score": {
+      "type": "number"
+    },
+    "compliance_status": {
+      "type": "string",
+      "enum": [
+        "ready",
+        "needs_attention",
+        "not_ready"
+      ]
+    },
+    "compliance_issues": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "review_score": {
+      "type": "number"
+    },
+    "review_max_score": {
+      "type": "number"
+    },
+    "budget_json": {
+      "type": "object"
+    },
+    "budget_narrative": {
+      "type": "string"
+    },
+    "grand_total": {
+      "type": "number"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [],
+  "name": "GrantApplication"
+}
