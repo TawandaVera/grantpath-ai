@@ -1,0 +1,61 @@
+{
+  "name": "ContentRepository",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Short descriptive name for the snippet"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "Mission Statement",
+        "Organizational Overview",
+        "Diversity & Inclusion Policy",
+        "Program Description",
+        "Impact Statement",
+        "Budget Narrative",
+        "Evaluation Plan",
+        "Sustainability Plan",
+        "Executive Bio",
+        "Letter of Support",
+        "Financial Overview",
+        "Other"
+      ],
+      "default": "Mission Statement"
+    },
+    "content": {
+      "type": "string",
+      "description": "Full text of the boilerplate snippet"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Searchable tags"
+    },
+    "word_count": {
+      "type": "number",
+      "description": "Auto-calculated word count"
+    },
+    "usage_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Times this snippet has been injected"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Internal notes about when to use this snippet"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "title",
+    "content",
+    "category"
+  ]
+}

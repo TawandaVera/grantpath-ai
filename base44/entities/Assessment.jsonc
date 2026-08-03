@@ -1,0 +1,188 @@
+{
+  "name": "Assessment",
+  "type": "object",
+  "properties": {
+    "job_id": {
+      "type": "string",
+      "description": "Reference to JobsRaw record ID"
+    },
+    "match_percent": {
+      "type": "number",
+      "description": "Match score percentage (0-100)"
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "GO",
+        "PREP",
+        "DEF",
+        "DECLINE"
+      ],
+      "description": "Assessment state"
+    },
+    "brief": {
+      "type": "string",
+      "description": "3-sentence summary brief"
+    },
+    "gaps": {
+      "type": "string",
+      "description": "Identified gaps or missing requirements"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Additional assessment notes"
+    },
+    "human_comments": {
+      "type": "string",
+      "description": "Human reviewer comments"
+    },
+    "state_reason": {
+      "type": "string",
+      "description": "Reason for state classification"
+    },
+    "mandate_alignment_score": {
+      "type": "number"
+    },
+    "eligibility_fit_score": {
+      "type": "number"
+    },
+    "deadline_score": {
+      "type": "number"
+    },
+    "geo_score": {
+      "type": "number"
+    },
+    "mandate_scores": {
+      "type": "object",
+      "description": "Score per mandate area",
+      "properties": {
+        "health_systems": {
+          "type": "number"
+        },
+        "workforce": {
+          "type": "number"
+        },
+        "equity": {
+          "type": "number"
+        },
+        "technology": {
+          "type": "number"
+        },
+        "prevention_sdoh": {
+          "type": "number"
+        }
+      }
+    },
+    "recommended_actions": {
+      "type": "string",
+      "description": "Comma-separated recommended next steps"
+    },
+    "scraped_url": {
+      "type": "string",
+      "description": "URL that was scraped for live data"
+    },
+    "direct_application_url": {
+      "type": "string",
+      "description": "Direct link to the application portal"
+    },
+    "application_deadline_live": {
+      "type": "string",
+      "description": "Deadline as found on live page"
+    },
+    "required_documents": {
+      "type": "array",
+      "description": "Actual required documents from the funder's page",
+      "items": {
+        "type": "string"
+      }
+    },
+    "application_forms": {
+      "type": "array",
+      "description": "Specific application forms required",
+      "items": {
+        "type": "string"
+      }
+    },
+    "eligibility_criteria": {
+      "type": "array",
+      "description": "Exact eligibility criteria scraped from funder",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ineligible_entities": {
+      "type": "array",
+      "description": "Entities explicitly excluded",
+      "items": {
+        "type": "string"
+      }
+    },
+    "award_size_live": {
+      "type": "string",
+      "description": "Award size as stated on live page"
+    },
+    "funder_priorities": {
+      "type": "array",
+      "description": "Stated funder priorities from live page",
+      "items": {
+        "type": "string"
+      }
+    },
+    "missing_info": {
+      "type": "array",
+      "description": "Information that could not be confirmed and needs verification",
+      "items": {
+        "type": "string"
+      }
+    },
+    "validation_flags": {
+      "type": "object",
+      "description": "Validation status flags",
+      "properties": {
+        "official_source": {
+          "type": "string",
+          "enum": [
+            "YES",
+            "NO",
+            "UNKNOWN"
+          ]
+        },
+        "direct_link_found": {
+          "type": "string",
+          "enum": [
+            "YES",
+            "NO",
+            "UNKNOWN"
+          ]
+        },
+        "deadline_confirmed": {
+          "type": "string",
+          "enum": [
+            "YES",
+            "NO",
+            "UNKNOWN"
+          ]
+        },
+        "eligibility_confirmed": {
+          "type": "string",
+          "enum": [
+            "YES",
+            "NO",
+            "UNKNOWN"
+          ]
+        },
+        "llc_eligible_confirmed": {
+          "type": "string",
+          "enum": [
+            "YES",
+            "NO",
+            "UNKNOWN"
+          ]
+        }
+      }
+    }
+  },
+  "required": [
+    "job_id"
+  ]
+}

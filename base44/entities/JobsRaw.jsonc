@@ -1,0 +1,71 @@
+{
+  "name": "JobsRaw",
+  "type": "object",
+  "properties": {
+    "url": {
+      "type": "string",
+      "description": "URL of the grant opportunity (unique identifier)"
+    },
+    "title": {
+      "type": "string",
+      "description": "Title of the grant opportunity"
+    },
+    "funder": {
+      "type": "string",
+      "description": "Funding organization name"
+    },
+    "amt_min": {
+      "type": "number",
+      "description": "Minimum award amount in USD"
+    },
+    "amt_max": {
+      "type": "number",
+      "description": "Maximum award amount in USD"
+    },
+    "deadline": {
+      "type": "string",
+      "format": "date",
+      "description": "Application deadline"
+    },
+    "class_id": {
+      "type": "number",
+      "description": "Classification ID (1-5)"
+    },
+    "description": {
+      "type": "string",
+      "description": "Full description of the grant"
+    },
+    "eligibility": {
+      "type": "string",
+      "description": "Eligibility requirements"
+    },
+    "forms": {
+      "type": "array",
+      "description": "Required application forms",
+      "items": {
+        "type": "string"
+      }
+    },
+    "geo": {
+      "type": "string",
+      "description": "Geographic focus/restrictions"
+    },
+    "source": {
+      "type": "string",
+      "description": "Data source (e.g., grants.gov, HRSA, NIH)"
+    },
+    "scraped_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this record was scraped"
+    },
+    "dupe_flag": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this is a suspected duplicate"
+    }
+  },
+  "required": [
+    "title"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "name": "Mandate",
+  "type": "object",
+  "properties": {
+    "mandate_id": {
+      "type": "number",
+      "description": "Mandate identifier (1-5)"
+    },
+    "name": {
+      "type": "string",
+      "description": "Mandate name"
+    },
+    "description": {
+      "type": "string"
+    },
+    "llc_ok": {
+      "type": "boolean",
+      "default": true
+    },
+    "no_political": {
+      "type": "boolean",
+      "default": true
+    },
+    "no_training_only": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "mandate_id",
+    "name"
+  ]
+}

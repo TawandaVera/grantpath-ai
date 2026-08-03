@@ -1,0 +1,64 @@
+{
+  "name": "FunderInteraction",
+  "type": "object",
+  "properties": {
+    "funder_id": {
+      "type": "string",
+      "description": "Reference to Funder record ID"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "Email",
+        "Call",
+        "Meeting",
+        "Letter of Inquiry",
+        "Application Submitted",
+        "Site Visit",
+        "Award",
+        "Rejection",
+        "Follow-up",
+        "Conference",
+        "Other"
+      ],
+      "default": "Email"
+    },
+    "contact_name": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string",
+      "description": "What happened / what was discussed"
+    },
+    "outcome": {
+      "type": "string",
+      "enum": [
+        "Positive",
+        "Neutral",
+        "Negative",
+        "Pending"
+      ],
+      "default": "Neutral"
+    },
+    "next_action": {
+      "type": "string"
+    },
+    "next_action_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "linked_job_id": {
+      "type": "string",
+      "description": "Optional link to a JobsRaw grant"
+    }
+  },
+  "required": [
+    "funder_id",
+    "type",
+    "date"
+  ]
+}

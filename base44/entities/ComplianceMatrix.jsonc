@@ -1,0 +1,113 @@
+{
+  "name": "ComplianceMatrix",
+  "type": "object",
+  "properties": {
+    "job_id": {
+      "type": "string",
+      "description": "Optional link to JobsRaw record"
+    },
+    "rfp_title": {
+      "type": "string",
+      "description": "Title of the RFP / opportunity"
+    },
+    "rfp_source": {
+      "type": "string",
+      "description": "URL or filename of source document"
+    },
+    "funder": {
+      "type": "string"
+    },
+    "deadline": {
+      "type": "string"
+    },
+    "award_range": {
+      "type": "string"
+    },
+    "evaluation_criteria": {
+      "type": "array",
+      "description": "Extracted evaluation criteria with weights",
+      "items": {
+        "type": "object",
+        "properties": {
+          "criterion": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "string"
+          },
+          "max_points": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "questions": {
+      "type": "array",
+      "description": "All extracted RFP questions/requirements",
+      "items": {
+        "type": "object",
+        "properties": {
+          "section": {
+            "type": "string"
+          },
+          "question": {
+            "type": "string"
+          },
+          "page_limit": {
+            "type": "string"
+          },
+          "char_limit": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "narrative_block": {
+            "type": "string"
+          },
+          "fill_status": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "narrative_blocks_used": {
+      "type": "array",
+      "description": "Master narrative blocks identified and mapped",
+      "items": {
+        "type": "string"
+      }
+    },
+    "compliance_score": {
+      "type": "number",
+      "description": "Overall compliance readiness percentage"
+    },
+    "missing_inputs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "key_insights": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "reviewed",
+        "approved"
+      ],
+      "default": "draft"
+    }
+  },
+  "required": [
+    "rfp_title"
+  ]
+}

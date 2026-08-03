@@ -1,0 +1,39 @@
+{
+  "name": "Track",
+  "type": "object",
+  "properties": {
+    "job_id": {
+      "type": "string",
+      "description": "Reference to JobsRaw record ID"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Scan",
+        "Assess",
+        "Pack",
+        "In Progress",
+        "Submitted",
+        "Pending",
+        "Awarded",
+        "Declined"
+      ],
+      "default": "Scan"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "team_member": {
+      "type": "string",
+      "description": "Assigned team member"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "job_id",
+    "status"
+  ]
+}

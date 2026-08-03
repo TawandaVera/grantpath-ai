@@ -1,0 +1,113 @@
+{
+  "name": "Funder",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Funder organization name"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "US Federal",
+        "Foundations",
+        "Global Multilateral",
+        "Hybrid",
+        "Innovation",
+        "State/Local",
+        "Corporate",
+        "Other"
+      ],
+      "description": "Funder category"
+    },
+    "website": {
+      "type": "string"
+    },
+    "ein": {
+      "type": "string",
+      "description": "EIN or public identifier"
+    },
+    "primary_contact_name": {
+      "type": "string"
+    },
+    "primary_contact_email": {
+      "type": "string"
+    },
+    "primary_contact_title": {
+      "type": "string"
+    },
+    "secondary_contact_name": {
+      "type": "string"
+    },
+    "secondary_contact_email": {
+      "type": "string"
+    },
+    "focus_areas": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Stated focus/priority areas"
+    },
+    "typical_award_min": {
+      "type": "number"
+    },
+    "typical_award_max": {
+      "type": "number"
+    },
+    "grant_cycle": {
+      "type": "string",
+      "enum": [
+        "Rolling",
+        "Annual",
+        "Biannual",
+        "Quarterly",
+        "Other"
+      ],
+      "default": "Annual"
+    },
+    "applications_submitted": {
+      "type": "number",
+      "default": 0
+    },
+    "applications_awarded": {
+      "type": "number",
+      "default": 0
+    },
+    "total_awarded_usd": {
+      "type": "number",
+      "default": 0
+    },
+    "historical_success_rate": {
+      "type": "number",
+      "description": "Override success rate (0.00-1.00). If null, defaults to funder-type baseline."
+    },
+    "relationship_status": {
+      "type": "string",
+      "enum": [
+        "Cold",
+        "Warm",
+        "Active",
+        "Awarded",
+        "Lapsed"
+      ],
+      "default": "Cold"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "last_interaction_date": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

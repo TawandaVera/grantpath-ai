@@ -1,0 +1,33 @@
+{
+  "name": "GrantClass",
+  "type": "object",
+  "properties": {
+    "class_id": {
+      "type": "number",
+      "description": "Class identifier (1-5)"
+    },
+    "name": {
+      "type": "string",
+      "description": "Class name"
+    },
+    "min_amount": {
+      "type": "number",
+      "default": 25000
+    },
+    "max_amount": {
+      "type": "number",
+      "default": 250000
+    },
+    "lens": {
+      "type": "string",
+      "description": "Evaluation lens (hybrid/systemic)"
+    },
+    "description": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "class_id",
+    "name"
+  ]
+}
